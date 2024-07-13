@@ -108,8 +108,8 @@ sound_load:
 
 	lda	(sound_ptr), y	; Status byte. 1=enable, 0=disable
 	sta	stream_status, x
-	;; If status byte is 0, stream disable, so we are done
-	beq	@next_stream
+	;; If status byte is 0, stream disable, advance pointer
+	beq	@advance_pointer
 	iny
 
 	lda	(sound_ptr), y	; Channel number
@@ -148,6 +148,14 @@ sound_load:
 	bne	@loop
 	
 	rts
+
+@advance_pointer:
+    iny
+    iny
+    iny
+    iny
+    iny
+    jmp @next_stream
 
 sound_play_frame:
 	lda	sound_disable_flag
